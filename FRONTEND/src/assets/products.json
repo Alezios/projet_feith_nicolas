@@ -1,0 +1,7 @@
+[
+    {"id": 1, "name": "banana", "price": 15, "imgLink":"", "desc":"Kris get the banana" },
+    {"id": 2, "name": "apple", "price": 200, "imgLink":"", "desc":"Definetely overpriced" },
+    {"id": 3, "name": "mango", "price": 30, "imgLink":"", "desc":"Womancome" },
+    {"id": 4, "name": "kiwi", "price": 10, "imgLink":"", "desc":"Cute small bird" },
+    {"id": 5, "name": "peach", "price": 20, "imgLink":"", "desc":"UwU" }
+]

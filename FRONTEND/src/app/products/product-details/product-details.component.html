@@ -1,0 +1,28 @@
+<h5 class="mb-2 text-muted">Produits dans le panier : {{ nbBasket$ | async }}</h5>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="row card-body">
+                <img class="col-sm-6" src="https://www.pinclipart.com/picdir/big/0-6197_clipart-info-orange-vector-black-and-white-png.png" alt="sans"/>
+                <div class="col-sm-6">
+                    <h6 class="card-subtitle mb-2 text-muted" style="display: inline;">
+                        #{{ product.id }}
+                    </h6>
+                    <h6 class="card-title" style="display: inline;">
+                        <a [routerLink]="['/products/product', product.id]">{{ product.name }}</a>
+                    </h6>
+                    <div class="card-text">
+                        Price: ${{ product.price }}
+                    </div>
+                    <div class="card-text">
+                        Description: {{ product.desc }}
+                    </div>
+                    <button class="btn btn-primary" (click)="addProduct(product)">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Shopping_Cart_Flat_Icon_Vector.svg/1024px-Shopping_Cart_Flat_Icon_Vector.svg.png" width="30" />
+                        Ajouter au panier
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

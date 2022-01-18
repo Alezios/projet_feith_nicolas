@@ -1,0 +1,17 @@
+<h2>Recap</h2>
+<mat-list>
+    <mat-list-item>Gender: {{data.gender}}</mat-list-item>
+    <mat-list-item>First Name: {{data.firstName}}</mat-list-item>
+    <mat-list-item>Last Name: {{data.lastName}}</mat-list-item>
+    <mat-list-item>Address: {{data.address}}</mat-list-item>
+    <mat-list-item>City: {{data.city}}</mat-list-item>
+    <mat-list-item>ZIP Code: {{data.cp}}</mat-list-item>
+    <mat-list-item>Country: {{data.country}}</mat-list-item>
+    <mat-list-item>Telephone: {{data.prefix}}   {{data.telephone | phone}}</mat-list-item>
+    <mat-list-item>Username: {{data.username}}</mat-list-item>
+    <mat-list-item>Email: {{data.email}}</mat-list-item>
+</mat-list>
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button [mat-dialog-close]="true" mat-raised-button color="primary">Confirm</button>
+</mat-dialog-actions>

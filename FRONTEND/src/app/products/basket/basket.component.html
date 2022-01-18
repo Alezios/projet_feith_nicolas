@@ -1,0 +1,19 @@
+<h3 class="mt-5 mb-2">Panier: </h3>
+<h5 class="mb-2 text-muted">Produits dans le panier : {{ nbBasket$ | async }}</h5>
+<div class="card" style="width: 12rem;" *ngFor="let p of products$ | async">
+    <div class="card-body">
+        <h6 class="card-subtitle mb-2 text-muted" style="display: inline;">
+            #{{ p.id }}
+        </h6>
+        <h6 class="card-title" style="display: inline;">
+            {{ p.name }}
+        </h6>
+        <div class="card-text">
+            Price: ${{ p.price }}
+        </div>
+        <button class="btn btn-primary" (click)="delProduct(p)">
+            <img src="https://fotomelia.com/wp-content/uploads/2017/02/clipart-images-gratuites-libres-de-droits-12-548x548.png" width="20" />
+            Supprimer du panier
+        </button> 
+    </div>
+</div>

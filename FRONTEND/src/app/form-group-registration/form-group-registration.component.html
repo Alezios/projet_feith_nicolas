@@ -1,0 +1,170 @@
+<form [formGroup]="registrationForm" novalidate (ngSubmit)="onSubmit()">
+    <mat-card class="registration-card">
+        <mat-card-header>
+            <mat-card-title>Registration Information</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>First Name</mat-label>
+                        <input matInput required placeholder="Dupont" formControlName="firstName">
+                        <mat-error *ngIf="registrationForm.controls['firstName'].hasError('required')">
+                            Please enter a first name
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput required placeholder="Pierre" formControlName="lastName">
+                        <mat-error *ngIf="registrationForm.controls['lastName'].hasError('required')">
+                            Please enter a last name
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <mat-form-field appearance="fill" class="full-width">
+                    <mat-label>Address</mat-label>
+                    <input matInput required placeholder="4 rue des Roses" formControlName="address">
+                    <mat-error *ngIf="registrationForm.controls['address'].hasError('required')">
+                        Please enter your address
+                    </mat-error>
+                    <mat-hint>Without city nor zip</mat-hint>
+                </mat-form-field>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>City</mat-label>
+                        <input matInput required placeholder="Strasbourg" formControlName="city">
+                        <mat-error *ngIf="registrationForm.controls['city'].hasError('required')">
+                            Please enter your city
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Postal Code</mat-label>
+                        <input matInput required #cp maxlength="5" placeholder="Postal Code" formControlName="cp">
+                        <mat-hint align="end">{{cp.value.length}} / 5</mat-hint>
+                        <mat-error *ngIf="registrationForm.controls['cp'].hasError('pattern')">
+                            Zip code should only be digits
+                        </mat-error>
+                        <mat-error *ngIf="registrationForm.controls['cp'].hasError('minlength')">
+                            Zip code is 5 digit long.
+                            Current: {{registrationForm.controls['cp'].getError('minlength').actualLength}}
+                        </mat-error>
+                        <mat-error *ngIf="registrationForm.controls['cp'].hasError('required')">
+                            Zip code is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Country</mat-label>
+                        <mat-select required placeholder="Country" formControlName="country" [(ngModel)]="phonePrefix">
+                            <mat-option *ngFor="let country of countries" [value]="country.prefix">
+                                {{ country.name }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="registrationForm.controls['country'].hasError('required')">
+                            Please select your country
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Telephone</mat-label>
+                        <input matInput required maxlength="10" placeholder="Telephone Number"
+                               formControlName="telephone">
+                        <span class="vertical-align" matPrefix>{{phonePrefix}}&nbsp;</span>
+                        <mat-error *ngIf="registrationForm.controls['telephone'].hasError('pattern')">
+                            Telephone number should only be 9 digits
+                        </mat-error>
+                        <mat-error *ngIf="registrationForm.controls['telephone'].hasError('required')">
+                            Telephone number is required
+                        </mat-error>
+                        <mat-hint align="end">No 0 in front of the number</mat-hint>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <mat-form-field appearance="fill" class="full-width">
+                    <mat-label>Email</mat-label>
+                    <input matInput required placeholder="pierre.dupont@gmail.com" formControlName="email">
+                    <mat-error *ngIf="registrationForm.controls['email'].hasError('required')">
+                        Please enter your email
+                    </mat-error>
+                    <mat-error *ngIf="registrationForm.controls['email'].hasError('email')">
+                        Please enter a valid email
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="row">
+                <div class="full-width mat-radio-group-margin">
+                    <label>Gender</label>
+                    <mat-radio-group formControlName="gender" class="registration-radio-group">
+                        <mat-radio-button value="M">Mr.</mat-radio-button>
+                        <mat-radio-button value="F">Mrs.</mat-radio-button>
+                        <mat-radio-button value="O">Other</mat-radio-button>
+                    </mat-radio-group>
+                    <mat-error *ngIf="registrationForm.controls['gender'].hasError('required')">
+                        Please select an option
+                    </mat-error>
+                </div>
+            </div>
+            <div class="row">
+                <mat-form-field appearance="fill" class="full-width">
+                    <mat-label>Username</mat-label>
+                    <input matInput required placeholder="PierreDupont67" formControlName="username">
+                    <mat-error *ngIf="registrationForm.controls['username'].hasError('required')">
+                        Please enter your username
+                    </mat-error>
+                    <mat-error *ngIf="registrationForm.controls['username'].hasError('pattern')">
+                        No space nor special characters are allowed
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Password</mat-label>
+                        <input required matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+                        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
+                                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                        <mat-error *ngIf="registrationForm.controls['password'].hasError('pattern')">
+                            Capital letter, number, special char, length 8+
+                        </mat-error>
+                        <mat-error *ngIf="registrationForm.controls['password'].hasError('required')">
+                            Please enter a password
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col">
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Confirm Password</mat-label>
+                        <input required matInput [type]="hideConfirm ? 'password' : 'text'"
+                               [errorStateMatcher]="matcher" formControlName="confirmPassword">
+                        <button mat-icon-button matSuffix (click)="hideConfirm = !hideConfirm"
+                                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirm">
+                            <mat-icon>{{hideConfirm ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                        <mat-error *ngIf="registrationForm.hasError('notSame')">
+                            Passwords don't match
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button color="primary" type="submit">Submit</button>
+        </mat-card-actions>
+    </mat-card>
+</form>
