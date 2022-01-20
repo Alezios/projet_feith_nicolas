@@ -4,15 +4,42 @@ import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 import { of } from "rxjs";
 import { Router } from "@angular/router";
+import { Store } from "@ngxs/store";
+import { UserState } from "./userState";
 
 @Injectable()
 export class ApiHttpInterceptor implements HttpInterceptor
 {
     jwtToken : String = "";
 
-    constructor(private router: Router) { }
+    constructor(private router: Router, private store: Store) {
+        this.store.select(UserState.getTokenJwt).subscribe(jwt =>
+            {
+              this.jwtToken = jwt;
+            });
+    }
+       
+    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        request = request.clone({
+          setHeaders: {
+            Authorization: `Bearer ${this.jwtToken}`
+          },
+        });
+    
+        return next.handle(request).pipe(tap(
+            (evt: HttpEvent<any>) => {},
+            (error: HttpErrorResponse) => {
+            switch (error.status) {
+                case 400:
+                case 401:
+                    this.router.navigate(['/']);
+            }
+            return of(null);
+        }
+        ));
+    }
 
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    /*intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
         if (this.jwtToken != "") {
             req = req.clone({ 
@@ -44,5 +71,5 @@ export class ApiHttpInterceptor implements HttpInterceptor
             return of(null);
         }
         ));
-    }
+    }*/
 }

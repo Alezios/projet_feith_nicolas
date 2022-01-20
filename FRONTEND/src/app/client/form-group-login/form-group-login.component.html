@@ -1,0 +1,34 @@
+<form [formGroup]="loginForm" novalidate (ngSubmit)="onSubmit()">
+    <mat-card class="login-card">
+        <mat-card-header>
+            <mat-card-title>Login Information</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="row">
+                <mat-form-field appearance="fill" class="full-width">
+                    <mat-label>Username</mat-label>
+                    <input matInput required placeholder="PierreDupont67" formControlName="username">
+                    <mat-error *ngIf="loginForm.controls['username'].hasError('required')">
+                        Please enter your username
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="row">
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Password</mat-label>
+                        <input required matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+                        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
+                                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                        <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
+                            Please enter a password
+                        </mat-error>
+                    </mat-form-field>
+            </div>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button color="primary" type="submit">Login</button>
+        </mat-card-actions>
+    </mat-card>
+</form>

@@ -1,9 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, Form, FormBuilder, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
-import {MyErrorStateMatcher} from "../password-matching-error-matcher";
+import {MyErrorStateMatcher} from "../../password-matching-error-matcher";
 import {MatDialog} from "@angular/material/dialog";
 import {RecapFormComponent} from "../recap-form/recap-form.component";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import { User } from '../../user';
+import { ClientService } from '../client.service';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-form-group-registration',
@@ -11,6 +14,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
     styleUrls: ['./form-group-registration.component.css']
 })
 export class FormGroupRegistrationComponent implements OnInit {
+
+    constructor(private clientService: ClientService, private fb: FormBuilder, public dialog: MatDialog, private sb: MatSnackBar) {}
 
     checkPasswords: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
         let pass = group.get('password')?.value;
@@ -39,7 +44,7 @@ export class FormGroupRegistrationComponent implements OnInit {
     ]
 
     registrationForm = this.fb.group({
-        firstName: [null, Validators.required],
+        firstname: [null, Validators.required],
         lastName: [null, Validators.required],
         address: [null, Validators.required],
         city: [null, Validators.required],
@@ -59,15 +64,12 @@ export class FormGroupRegistrationComponent implements OnInit {
         confirmPassword: [null, Validators.required],
     }, {validators: this.checkPasswords})
 
-    constructor(private fb: FormBuilder, public dialog: MatDialog, private sb: MatSnackBar) {
-    }
-
     openDialog() {
         let country: any =this.countries.find(element => element.prefix == this.registrationForm.controls['country'].value)?.name
         console.log(country)
         const DialogRef = this.dialog.open(RecapFormComponent, {
             data: {
-                firstName: this.registrationForm.controls['firstName'].value,
+                firstname: this.registrationForm.controls['firstname'].value,
                 lastName: this.registrationForm.controls['lastName'].value,
                 address: this.registrationForm.controls['address'].value,
                 city: this.registrationForm.controls['city'].value,
@@ -91,9 +93,43 @@ export class FormGroupRegistrationComponent implements OnInit {
 
     ngOnInit(): void {
     }
-    onSubmit(): void {
-        this.openDialog();
-    }
+
+    onSubmit(): void{
+
+        if (!this.registrationForm.valid) {
+          return;
+        }
+    
+        const newUser : User = new User(
+          this.registrationForm.value.firstname,
+          this.registrationForm.value.lastName,
+          this.registrationForm.value.address,
+          this.registrationForm.value.city,
+          this.registrationForm.value.cp,
+          this.countries.find(element => element.prefix == this.registrationForm.controls['country'].value)!.name,
+          this.registrationForm.value.country,
+          this.registrationForm.value.tel,
+          this.registrationForm.value.email,
+          this.registrationForm.value.gender,
+          this.registrationForm.value.username,
+          this.registrationForm.value.password
+        )
+
+        this.clientService.create(newUser).subscribe(user => {
+            if( user ){
+                console.log(user);
+                this.openDialog();
+            }
+            else{
+                console.log("raté");
+                /*
+                this.registrationForm.setErrors({
+                  duplicateLogin: true
+                });
+                */
+              }
+        });
+      }
 
 
 }

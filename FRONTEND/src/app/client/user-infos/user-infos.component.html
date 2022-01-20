@@ -1,0 +1,20 @@
+<div id="container-summary">
+    <table>
+        <tr class="turqBack">
+            <th>Nom complet</th>
+            <th>Adresse</th>
+            <th>Téléphone</th>
+            <th>Email</th>
+            <th>Login</th>
+            <th>Password</th>
+        </tr>
+        <tr *ngIf="(userObs | async) as user">
+            <td>{{ user.gender }} {{ user.firstname }} {{ user.lastName.toUpperCase() }}</td>
+            <td>{{ user.address }} {{ user.cp }} {{ user.city }}</td>
+            <td>{{ user.telephone | phone }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.password }}</td>
+        </tr>
+    </table>
+</div>

@@ -14,12 +14,12 @@ import { ProductState } from 'src/app/productState';
   styleUrls: ['./product-details.component.css']
 })
 export class ProductDetailsComponent implements OnInit {
-  product: Product;
+  product!: Product;
   id : number;
 
   constructor(private monservService: MonservService, private store: Store, private activatedRoute: ActivatedRoute) {
     this.id = this.activatedRoute.snapshot.params['id'];
-    this.product = this.monservService.getCatalogueNotObs().filter(product => product.id == this.id)[0];
+    this.monservService.getProductDetail(this.id.toString()).subscribe(product => this.product = product);
   }
 
   ngOnInit() {
